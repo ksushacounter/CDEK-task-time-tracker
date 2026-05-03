@@ -5,6 +5,7 @@ import com.timetracker.task_time_tracker.dto.TimeRecordResponse;
 import com.timetracker.task_time_tracker.service.TimeRecordService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -46,30 +47,44 @@ public class TimeRecordController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Запись успешно создана"),
-            @ApiResponse(responseCode = "400", description = "Ошибка валидации (время начала позже окончания или неверный формат)"),
+            @ApiResponse(responseCode = "400", description = "Ошибка валидации"),
             @ApiResponse(responseCode = "401", description = "Не аутентифицирован"),
             @ApiResponse(responseCode = "404", description = "Задача с указанным ID не найдена")
     })
     public TimeRecordResponse create(
-            @Parameter(description = "Данные для создания записи", required = true,
-                    examples = {
-                            @ExampleObject(name = "Полный рабочий день", value = """
-                                    {
-                                        "employeeId": 1,
-                                        "taskId": 1,
-                                        "startTime": "2024-06-01T09:00:00",
-                                        "endTime": "2024-06-01T18:00:00",
-                                        "description": "Разработка API контроллеров"
-                                    }"""),
-                            @ExampleObject(name = "Частичная работа", value = """
-                                    {
-                                        "employeeId": 1,
-                                        "taskId": 2,
-                                        "startTime": "2024-06-01T14:00:00",
-                                        "endTime": "2024-06-01T17:30:00",
-                                        "description": "Написание тестов"
-                                    }""")
-                    })
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Данные для создания записи",
+                    required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Полный рабочий день",
+                                            value = """
+                        {
+                            "employeeId": 1,
+                            "taskId": 1,
+                            "startTime": "2024-06-01T09:00:00",
+                            "endTime": "2024-06-01T17:00:00",
+                            "description": "Разработка API контроллеров"
+                        }
+                        """
+                                    ),
+                                    @ExampleObject(
+                                            name = "Частичная работа",
+                                            value = """
+                        {
+                            "employeeId": 1,
+                            "taskId": 1,
+                            "startTime": "2024-06-01T14:00:00",
+                            "endTime": "2024-06-01T17:30:00",
+                            "description": "Написание тестов"
+                        }
+                        """
+                                    )
+                            }
+                    )
+            )
             @Valid @RequestBody TimeRecordCreateDTO dto) {
         return timeRecordService.create(dto);
     }

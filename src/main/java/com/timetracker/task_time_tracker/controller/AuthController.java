@@ -17,7 +17,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -69,7 +68,23 @@ public class AuthController {
                                         "path": "/auth/login"
                                     }""")))
     })
-    public ResponseEntity<?> login(@RequestBody AuthRequest request) {
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Учётные данные пользователя",
+            required = true,
+            content = @Content(
+                    mediaType = "application/json",
+                    examples = @ExampleObject(
+                            name = "admin",
+                            value = """
+                                    {
+                                        "username": "admin",
+                                        "password": "admin123"
+                                    }"""
+                    )
+            )
+    )
+    public ResponseEntity<?> login(
+            @org.springframework.web.bind.annotation.RequestBody AuthRequest request) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.username(), request.password())

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @MybatisTest
@@ -19,18 +21,31 @@ class UserMapperTest {
     @Test
     @Sql(scripts = "/schema.sql")
     void findByUsername_ShouldReturnUser() {
-        User user = userMapper.findByUsername("admin");
+        Optional<User> userOpt = userMapper.findByUsername("admin");
 
-        assertThat(user).isNotNull();
-        assertThat(user.getUsername()).isEqualTo("admin");
-        assertThat(user.getRole()).isEqualTo("ADMIN");
-        assertThat(user.isEnabled()).isTrue();
+        assertThat(userOpt).isPresent();
+        assertThat(userOpt.get().getUsername()).isEqualTo("admin");
+        assertThat(userOpt.get().getRole()).isEqualTo("ADMIN");
+        assertThat(userOpt.get().isEnabled()).isTrue();
     }
 
     @Test
-    void findByUsername_NotFound_ShouldReturnNull() {
-        User user = userMapper.findByUsername("nonexistent");
+    void findByUsername_NotFound_ShouldReturnEmpty() {
+        Optional<User> userOpt = userMapper.findByUsername("nonexistent");
 
-        assertThat(user).isNull();
+        assertThat(userOpt).isEmpty();
+    }
+
+    @Test
+    void findById_ShouldReturnUser() {
+        Optional<User> userOpt = userMapper.findById(1L);
+        assertThat(userOpt).isPresent();
+    }
+
+    @Test
+    void findById_NotFound_ShouldReturnEmpty() {
+        Optional<User> userOpt = userMapper.findById(99999L);
+
+        assertThat(userOpt).isEmpty();
     }
 }

@@ -57,7 +57,7 @@ class GlobalExceptionHandlerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidJson))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.title").value("Validation failed"))
+                .andExpect(jsonPath("$.title").value("Bad Request"))
                 .andExpect(jsonPath("$.errors").exists());
     }
 

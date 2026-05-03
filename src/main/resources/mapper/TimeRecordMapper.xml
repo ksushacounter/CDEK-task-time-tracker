@@ -24,4 +24,8 @@
         AND end_time &lt;= #{endDate}
         ORDER BY start_time
     </select>
+
+    <delete id="deleteAll">
+        DELETE FROM task
+    </delete>
 </mapper>

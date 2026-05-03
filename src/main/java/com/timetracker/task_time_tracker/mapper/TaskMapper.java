@@ -1,7 +1,6 @@
 package com.timetracker.task_time_tracker.mapper;
 
 import com.timetracker.task_time_tracker.model.Task;
-import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -18,6 +17,5 @@ public interface TaskMapper {
 
     List<Task> findAll();
 
-    @Delete("DELETE FROM task")
     void deleteAll();
 }

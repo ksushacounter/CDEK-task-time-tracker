@@ -190,6 +190,6 @@ class TimeRecordControllerTest {
                         .header("Authorization", "Bearer " + adminToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isNotFound());
     }
 }

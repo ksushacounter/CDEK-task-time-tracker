@@ -58,7 +58,7 @@ class AuthControllerTest {
                 "password", "admin123"
         );
 
-        mockMvc.perform(post("/auth/token")
+        mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isUnauthorized());

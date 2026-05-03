@@ -26,4 +26,8 @@
     <select id="findAll" resultMap="TaskResultMap">
         SELECT * FROM task ORDER BY id
     </select>
+
+    <delete id="deleteAll">
+        DELETE FROM task
+    </delete>
 </mapper>
